@@ -6,7 +6,6 @@ import {
   KanbanSquare,
   Calendar,
   AlarmClock,
-  Settings,
   Users,
   BarChart3,
   Menu,
@@ -19,9 +18,7 @@ const menuItems = [
   { id: 'tasks', label: '任务看板', icon: KanbanSquare },
   { id: 'gantt', label: '甘特图', icon: Calendar },
   { id: 'alerts', label: '预警中心', icon: AlarmClock },
-  { id: 'reports', label: '报表分析', icon: BarChart3 },
   { id: 'users', label: '用户管理', icon: Users },
-  { id: 'settings', label: '系统设置', icon: Settings },
 ]
 
 export const Sidebar: React.FC = () => {

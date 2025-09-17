@@ -1,6 +1,6 @@
 import React from 'react'
 import './index.css'
-import { Sidebar } from './components/Layout/Sidebar.jsx'
+import { Sidebar } from './components/Layout/Sidebar.tsx'
 import { Header } from './components/Layout/Header.jsx'
 import { Dashboard } from './pages/Dashboard.jsx'
 import { ProjectManagement } from './pages/ProjectManagement.jsx'
@@ -24,12 +24,8 @@ export default function App() {
         return <GanttChart />
       case 'alerts':
         return <AlertCenter />
-      case 'reports':
-        return <div className="p-6">报表分析页面（开发中）</div>
       case 'users':
         return <div className="p-6">用户管理页面（开发中）</div>
-      case 'settings':
-        return <div className="p-6">系统设置页面（开发中）</div>
       default:
         return <Dashboard />
     }
