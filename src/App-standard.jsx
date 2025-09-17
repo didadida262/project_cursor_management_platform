@@ -45,9 +45,7 @@ export default function App() {
     { id: 'tasks', label: '任务看板', icon: '📋' },
     { id: 'gantt', label: '甘特图', icon: '📈' },
     { id: 'alerts', label: '预警中心', icon: '⚠️' },
-    { id: 'reports', label: '报表分析', icon: '📊' },
     { id: 'users', label: '用户管理', icon: '👥' },
-    { id: 'settings', label: '系统设置', icon: '⚙️' },
   ]
 
   const renderContent = () => {
