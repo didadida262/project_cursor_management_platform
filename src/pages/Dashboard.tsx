@@ -54,7 +54,7 @@ export const Dashboard: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 panel-scroll">
       {/* 页面标题 */}
       <div className="flex items-center justify-between">
         <div>

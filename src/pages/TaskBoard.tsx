@@ -73,7 +73,7 @@ export const TaskBoard: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 panel-scroll">
       {/* 页面头部 */}
       <div className="flex items-center justify-between">
         <div>
@@ -281,7 +281,7 @@ const TaskFormModal: React.FC<{
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-panel border border-white/10 rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <div className="bg-panel border border-white/10 rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto table-scroll">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-semibold text-text">
             {task ? '编辑任务' : '创建任务'}

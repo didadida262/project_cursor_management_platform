@@ -34,7 +34,7 @@ export const Sidebar: React.FC = () => {
   } = useAppStore()
 
   return (
-    <aside className={`bg-panel border-r border-white/10 transition-all duration-300 ${
+    <aside className={`bg-panel border-r border-white/10 transition-all duration-300 sidebar-scroll ${
       sidebarCollapsed ? 'w-16' : 'w-64'
     }`}>
       {/* 头部 */}

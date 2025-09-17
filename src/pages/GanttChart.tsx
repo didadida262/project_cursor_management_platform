@@ -65,7 +65,7 @@ export const GanttChart: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 panel-scroll">
       {/* 页面头部 */}
       <div className="flex items-center justify-between">
         <div>
@@ -151,7 +151,7 @@ export const GanttChart: React.FC = () => {
             <div className="p-4 border-b border-white/10">
               <h3 className="font-semibold text-text">任务列表</h3>
             </div>
-            <div className="max-h-96 overflow-y-auto">
+            <div className="max-h-96 overflow-y-auto table-scroll">
               {filteredTasks.map((task) => (
                 <div key={task.id} className="p-3 border-b border-white/5 hover:bg-white/5">
                   <div className="flex items-center gap-2 mb-1">
@@ -174,7 +174,7 @@ export const GanttChart: React.FC = () => {
           </div>
 
           {/* 时间轴 */}
-          <div className="flex-1 overflow-x-auto">
+          <div className="flex-1 overflow-x-auto table-scroll">
             <div className="min-w-max">
               {/* 时间轴头部 */}
               <div className="p-4 border-b border-white/10">
