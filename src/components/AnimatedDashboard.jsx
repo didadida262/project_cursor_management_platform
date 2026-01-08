@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { createAnimationStyle, animations, statCardAnimation } from '../utils/animations'
 
 const AnimatedDashboard = () => {
+  const { t } = useTranslation()
   const [isVisible, setIsVisible] = useState(false)
   const [hoveredCard, setHoveredCard] = useState(null)
 
@@ -13,7 +15,7 @@ const AnimatedDashboard = () => {
   // 仪表盘统计数据
   const dashboardStats = [
     {
-      title: '总项目数',
+      title: t('dashboard.totalProjects'),
       value: 8,
       change: '+12%',
       changeType: 'positive',
@@ -21,7 +23,7 @@ const AnimatedDashboard = () => {
       icon: '📊'
     },
     {
-      title: '进行中项目',
+      title: t('dashboard.projectsInProgress'),
       value: 3,
       change: '+5%',
       changeType: 'positive',
@@ -29,7 +31,7 @@ const AnimatedDashboard = () => {
       icon: '🔄'
     },
     {
-      title: '已完成项目',
+      title: t('dashboard.completedProjects'),
       value: 4,
       change: '+8%',
       changeType: 'positive',
@@ -37,7 +39,7 @@ const AnimatedDashboard = () => {
       icon: '✅'
     },
     {
-      title: '预警数量',
+      title: t('dashboard.alertQuantity'),
       value: 2,
       change: '-3%',
       changeType: 'negative',
@@ -56,9 +58,9 @@ const AnimatedDashboard = () => {
 
   // 预警数据
   const alerts = [
-    { type: 'urgent', message: 'CRM系统重构项目预计延期3天', time: '2小时前' },
-    { type: 'warning', message: 'API接口开发任务已7天未更新', time: '4小时前' },
-    { type: 'info', message: '需求确认里程碑将在2天后到期', time: '1天前' }
+    { type: 'urgent', message: t('alerts.expectedDelay', { days: 3 }), time: t('dashboard.hoursAgo', { count: 2 }) },
+    { type: 'warning', message: t('alerts.taskNotUpdated', { days: 7 }), time: t('dashboard.hoursAgo', { count: 4 }) },
+    { type: 'info', message: t('alerts.milestoneExpiring', { days: 2 }), time: t('dashboard.daysAgo', { count: 1 }) }
   ]
 
   const getStatusColor = (status) => {
@@ -102,10 +104,10 @@ const AnimatedDashboard = () => {
           color: '#e6f0ff',
           fontWeight: '700'
         }}>
-          仪表盘
+          {t('dashboard.title')}
         </h1>
         <p style={{ color: '#9fb2d8', fontSize: '1rem' }}>
-          项目概览和关键指标监控
+          {t('dashboard.subtitle')}
         </p>
       </div>
 
@@ -247,7 +249,7 @@ const AnimatedDashboard = () => {
             alignItems: 'center',
             gap: '0.5rem'
           }}>
-            📋 最近项目
+            📋 {t('dashboard.recentProjects')}
           </h3>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -315,7 +317,7 @@ const AnimatedDashboard = () => {
                     justifyContent: 'space-between', 
                     marginBottom: '0.25rem' 
                   }}>
-                    <span style={{ color: '#9fb2d8', fontSize: '0.8rem' }}>进度</span>
+                    <span style={{ color: '#9fb2d8', fontSize: '0.8rem' }}>{t('common.progress')}</span>
                     <span style={{ 
                       color: getStatusColor(project.status), 
                       fontSize: '0.8rem', 
@@ -363,7 +365,7 @@ const AnimatedDashboard = () => {
             alignItems: 'center',
             gap: '0.5rem'
           }}>
-            ⚠️ 预警中心
+            ⚠️ {t('common.alertCenter')}
           </h3>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>

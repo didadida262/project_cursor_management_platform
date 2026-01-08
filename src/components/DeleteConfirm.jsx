@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 const DeleteConfirm = ({ 
   isOpen, 
@@ -6,6 +7,7 @@ const DeleteConfirm = ({
   onConfirm, 
   projectName 
 }) => {
+  const { t } = useTranslation()
   if (!isOpen) return null
 
   return (
@@ -54,14 +56,14 @@ const DeleteConfirm = ({
               fontWeight: '600',
               margin: '0 0 0.25rem 0'
             }}>
-              确认删除
+              {t('common.deleteConfirm')}
             </h3>
             <p style={{ 
               color: '#9fb2d8', 
               fontSize: '0.9rem',
               margin: 0
             }}>
-              此操作无法撤销
+              {t('common.deleteConfirmMessage', { name: projectName })}
             </p>
           </div>
         </div>
@@ -72,9 +74,7 @@ const DeleteConfirm = ({
           marginBottom: '2rem',
           lineHeight: '1.5'
         }}>
-          确定要删除项目 <strong style={{ color: '#ef4444' }}>"{projectName}"</strong> 吗？
-          <br />
-          删除后，该项目下的所有任务和数据都将被永久删除。
+          {t('common.deleteConfirmMessage', { name: projectName })}
         </p>
 
         <div style={{
@@ -94,7 +94,7 @@ const DeleteConfirm = ({
               fontSize: '0.9rem'
             }}
           >
-            取消
+            {t('common.cancel')}
           </button>
           <button
             onClick={onConfirm}
@@ -109,7 +109,7 @@ const DeleteConfirm = ({
               fontWeight: '500'
             }}
           >
-            确认删除
+            {t('common.delete')}
           </button>
         </div>
       </div>

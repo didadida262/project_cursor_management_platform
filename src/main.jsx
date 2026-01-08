@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
+import './i18n/config'
 import App from './App.jsx'
 import { useAppStore } from './store'
 import { mockUsers, mockProjects, mockTasks, mockAlerts, mockNotifications } from './data/mockData'

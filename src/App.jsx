@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useProjects } from './hooks/useProjects'
 import ProjectModal from './components/ProjectModal'
 import DeleteConfirm from './components/DeleteConfirm'
@@ -14,7 +15,27 @@ import AnimatedGanttChart from './components/AnimatedGanttChart'
 import AnimatedAlertCenter from './components/AnimatedAlertCenter'
 
 export default function App() {
+  const { t, i18n } = useTranslation()
   const [currentPage, setCurrentPage] = useState('dashboard')
+  const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false)
+  const languageDropdownRef = useRef(null)
+
+  // 点击外部关闭下拉框
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (languageDropdownRef.current && !languageDropdownRef.current.contains(event.target)) {
+        setLanguageDropdownOpen(false)
+      }
+    }
+
+    if (languageDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [languageDropdownOpen])
   
   // 项目管理相关状态和逻辑
   const {
@@ -40,13 +61,18 @@ export default function App() {
   } = useProjects()
 
   const menuItems = [
-    { id: 'dashboard', label: '仪表盘', icon: '📊' },
-    { id: 'projects', label: '项目管理', icon: '📁' },
-    { id: 'tasks', label: '任务看板', icon: '📋' },
-    { id: 'gantt', label: '甘特图', icon: '📈' },
-    { id: 'alerts', label: '预警中心', icon: '⚠️' },
-    { id: 'users', label: '用户管理', icon: '👥' },
+    { id: 'dashboard', labelKey: 'common.dashboard', icon: '📊' },
+    { id: 'projects', labelKey: 'common.projectManagement', icon: '📁' },
+    { id: 'tasks', labelKey: 'common.taskBoard', icon: '📋' },
+    { id: 'gantt', labelKey: 'common.ganttChart', icon: '📈' },
+    { id: 'alerts', labelKey: 'common.alertCenter', icon: '⚠️' },
+    { id: 'users', labelKey: 'common.userManagement', icon: '👥' },
   ]
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng)
+    setLanguageDropdownOpen(false)
+  }
 
   const renderContent = () => {
     switch (currentPage) {
@@ -57,8 +83,8 @@ export default function App() {
           <div style={{ padding: '2rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
               <div>
-                <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#e6f0ff' }}>项目管理</h1>
-                <p style={{ color: '#9fb2d8' }}>创建和管理项目</p>
+                <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#e6f0ff' }}>{t('projects.title')}</h1>
+                <p style={{ color: '#9fb2d8' }}>{t('projects.subtitle')}</p>
               </div>
               <div style={{ display: 'flex', gap: '1rem' }}>
                 <button style={{
@@ -69,7 +95,7 @@ export default function App() {
                   borderRadius: '8px',
                   cursor: 'pointer'
                 }}>
-                  📊 报表视图
+                  📊 {t('projects.reportView')}
                 </button>
                 <button 
                   onClick={() => setShowCreateModal(true)}
@@ -94,7 +120,7 @@ export default function App() {
                     e.target.style.boxShadow = '0 4px 15px rgba(90, 168, 255, 0.3)'
                   }}
                 >
-                  + 新建项目
+                  + {t('common.newProject')}
                 </button>
               </div>
             </div>
@@ -107,28 +133,28 @@ export default function App() {
               marginBottom: '2rem' 
             }}>
               <AnimatedStatCard
-                title="总项目数"
+                title={t('projects.totalProjects')}
                 value={stats.total}
                 color="#5aa8ff"
                 icon="📊"
                 index={0}
               />
               <AnimatedStatCard
-                title="进行中"
+                title={t('projects.inProgress')}
                 value={stats.active}
                 color="#3ddc97"
                 icon="🔄"
                 index={1}
               />
               <AnimatedStatCard
-                title="已完成"
+                title={t('projects.completed')}
                 value={stats.completed}
                 color="#10b981"
                 icon="✅"
                 index={2}
               />
               <AnimatedStatCard
-                title="延期"
+                title={t('projects.delayed')}
                 value={stats.delayed}
                 color="#ef4444"
                 icon="⚠️"
@@ -167,9 +193,9 @@ export default function App() {
               {projects.length === 0 && (
                 <AnimatedEmptyState
                   icon="📁"
-                  title="暂无项目"
-                  description="没有找到符合条件的项目，请调整筛选条件或创建新项目"
-                  actionText="创建新项目"
+                  title={t('common.noProjects')}
+                  description={t('common.noProjectsDescription')}
+                  actionText={t('common.createNewProject')}
                   onAction={() => setShowCreateModal(true)}
                 />
               )}
@@ -185,8 +211,8 @@ export default function App() {
       case 'users':
         return (
           <div style={{ padding: '2rem' }}>
-            <h1 style={{ fontSize: '2rem', marginBottom: '1rem', color: '#e6f0ff' }}>用户管理</h1>
-            <p style={{ color: '#9fb2d8', marginBottom: '2rem' }}>管理系统用户和权限</p>
+            <h1 style={{ fontSize: '2rem', marginBottom: '1rem', color: '#e6f0ff' }}>{t('users.title')}</h1>
+            <p style={{ color: '#9fb2d8', marginBottom: '2rem' }}>{t('users.subtitle')}</p>
             <div style={{ 
               background: '#0f1730', 
               border: '1px solid rgba(255,255,255,0.1)', 
@@ -195,8 +221,8 @@ export default function App() {
               textAlign: 'center'
             }}>
               <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>👥</div>
-              <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', color: '#e6f0ff' }}>用户管理功能</h2>
-              <p style={{ color: '#9fb2d8', marginBottom: '2rem' }}>完整的用户管理功能已实现，包括用户列表、添加、编辑、删除等功能</p>
+              <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', color: '#e6f0ff' }}>{t('users.userManagementFeatures')}</h2>
+              <p style={{ color: '#9fb2d8', marginBottom: '2rem' }}>{t('users.userManagementDescription')}</p>
               <div style={{ 
                 display: 'grid', 
                 gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
@@ -210,8 +236,8 @@ export default function App() {
                   padding: '1rem' 
                 }}>
                   <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>📊</div>
-                  <h3 style={{ color: '#e6f0ff', marginBottom: '0.5rem' }}>用户统计</h3>
-                  <p style={{ color: '#9fb2d8', fontSize: '0.9rem' }}>查看用户总数、角色分布等统计信息</p>
+                  <h3 style={{ color: '#e6f0ff', marginBottom: '0.5rem' }}>{t('users.userStatistics')}</h3>
+                  <p style={{ color: '#9fb2d8', fontSize: '0.9rem' }}>{t('users.userStatisticsDescription')}</p>
                 </div>
                 <div style={{ 
                   background: 'rgba(90, 168, 255, 0.1)', 
@@ -220,8 +246,8 @@ export default function App() {
                   padding: '1rem' 
                 }}>
                   <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>➕</div>
-                  <h3 style={{ color: '#e6f0ff', marginBottom: '0.5rem' }}>添加用户</h3>
-                  <p style={{ color: '#9fb2d8', fontSize: '0.9rem' }}>创建新用户并设置角色和权限</p>
+                  <h3 style={{ color: '#e6f0ff', marginBottom: '0.5rem' }}>{t('users.addUser')}</h3>
+                  <p style={{ color: '#9fb2d8', fontSize: '0.9rem' }}>{t('users.addUserDescription')}</p>
                 </div>
                 <div style={{ 
                   background: 'rgba(90, 168, 255, 0.1)', 
@@ -230,8 +256,8 @@ export default function App() {
                   padding: '1rem' 
                 }}>
                   <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>✏️</div>
-                  <h3 style={{ color: '#e6f0ff', marginBottom: '0.5rem' }}>编辑用户</h3>
-                  <p style={{ color: '#9fb2d8', fontSize: '0.9rem' }}>修改用户信息和权限设置</p>
+                  <h3 style={{ color: '#e6f0ff', marginBottom: '0.5rem' }}>{t('users.editUser')}</h3>
+                  <p style={{ color: '#9fb2d8', fontSize: '0.9rem' }}>{t('users.editUserDescription')}</p>
                 </div>
                 <div style={{ 
                   background: 'rgba(90, 168, 255, 0.1)', 
@@ -240,8 +266,8 @@ export default function App() {
                   padding: '1rem' 
                 }}>
                   <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>🔍</div>
-                  <h3 style={{ color: '#e6f0ff', marginBottom: '0.5rem' }}>搜索筛选</h3>
-                  <p style={{ color: '#9fb2d8', fontSize: '0.9rem' }}>按角色、部门等条件筛选用户</p>
+                  <h3 style={{ color: '#e6f0ff', marginBottom: '0.5rem' }}>{t('users.searchFilter')}</h3>
+                  <p style={{ color: '#9fb2d8', fontSize: '0.9rem' }}>{t('users.searchFilterDescription')}</p>
                 </div>
               </div>
             </div>
@@ -250,7 +276,7 @@ export default function App() {
       default:
         return (
           <div style={{ padding: '2rem' }}>
-            <h1 style={{ fontSize: '2rem', marginBottom: '1rem', color: '#e6f0ff' }}>{menuItems.find(item => item.id === currentPage)?.label}</h1>
+            <h1 style={{ fontSize: '2rem', marginBottom: '1rem', color: '#e6f0ff' }}>{t(menuItems.find(item => item.id === currentPage)?.labelKey || 'common.dashboard')}</h1>
             <p style={{ color: '#9fb2d8' }}>功能开发中...</p>
           </div>
         )
@@ -282,7 +308,7 @@ export default function App() {
         overflowY: 'auto'
       }}>
         <div style={{ padding: '0 1.5rem', marginBottom: '2rem' }}>
-          <h1 style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#e6f0ff' }}>项目管理系统</h1>
+          <h1 style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#e6f0ff' }}>{t('common.projectManagementSystem')}</h1>
         </div>
         
         <nav style={{ padding: '0 1rem' }}>
@@ -320,7 +346,7 @@ export default function App() {
               }}
             >
               <span style={{ fontSize: '1.1rem' }}>{item.icon}</span>
-              {item.label}
+              {t(item.labelKey)}
             </button>
           ))}
         </nav>
@@ -330,7 +356,9 @@ export default function App() {
       <div style={{ 
         marginLeft: '260px',
         flex: 1,
-        minHeight: '100vh',
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
         background: '#0b1020'
       }}>
         {/* 顶部导航栏 */}
@@ -341,13 +369,114 @@ export default function App() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0 2rem'
+          padding: '0 2rem',
+          flexShrink: 0
         }}>
           <h2 style={{ fontSize: '1.25rem', fontWeight: '600', color: '#e6f0ff' }}>
-            {menuItems.find(item => item.id === currentPage)?.label}
+            {t(menuItems.find(item => item.id === currentPage)?.labelKey || 'common.dashboard')}
           </h2>
           
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', position: 'relative' }}>
+            {/* 语言选择下拉框 */}
+            <div style={{ position: 'relative' }} ref={languageDropdownRef}>
+              <button
+                onClick={() => setLanguageDropdownOpen(!languageDropdownOpen)}
+                style={{
+                  padding: '0.5rem 1rem',
+                  background: 'rgba(255,255,255,0.1)',
+                  color: '#e6f0ff',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  fontSize: '0.9rem',
+                  transition: 'all 0.2s'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = 'rgba(255,255,255,0.15)'
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = 'rgba(255,255,255,0.1)'
+                }}
+              >
+                <span>🌐</span>
+                <span>{i18n.language === 'zh' ? t('common.chinese') : t('common.english')}</span>
+                <span style={{ fontSize: '0.7rem' }}>▼</span>
+              </button>
+              
+              {languageDropdownOpen && (
+                <div style={{
+                  position: 'absolute',
+                  top: '100%',
+                  right: 0,
+                  marginTop: '0.5rem',
+                  background: '#0f1730',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  borderRadius: '8px',
+                  minWidth: '120px',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                  zIndex: 1000
+                }}>
+                  <button
+                    onClick={() => changeLanguage('zh')}
+                    style={{
+                      width: '100%',
+                      padding: '0.75rem 1rem',
+                      background: i18n.language === 'zh' ? 'rgba(90, 168, 255, 0.2)' : 'transparent',
+                      color: i18n.language === 'zh' ? '#5aa8ff' : '#e6f0ff',
+                      border: 'none',
+                      borderRadius: '8px 8px 0 0',
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      fontSize: '0.9rem',
+                      transition: 'all 0.2s'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (i18n.language !== 'zh') {
+                        e.target.style.background = 'rgba(255,255,255,0.1)'
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (i18n.language !== 'zh') {
+                        e.target.style.background = 'transparent'
+                      }
+                    }}
+                  >
+                    {t('common.chinese')}
+                  </button>
+                  <button
+                    onClick={() => changeLanguage('en')}
+                    style={{
+                      width: '100%',
+                      padding: '0.75rem 1rem',
+                      background: i18n.language === 'en' ? 'rgba(90, 168, 255, 0.2)' : 'transparent',
+                      color: i18n.language === 'en' ? '#5aa8ff' : '#e6f0ff',
+                      border: 'none',
+                      borderRadius: '0 0 8px 8px',
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      fontSize: '0.9rem',
+                      transition: 'all 0.2s'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (i18n.language !== 'en') {
+                        e.target.style.background = 'rgba(255,255,255,0.1)'
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (i18n.language !== 'en') {
+                        e.target.style.background = 'transparent'
+                      }
+                    }}
+                  >
+                    {t('common.english')}
+                  </button>
+                </div>
+              )}
+            </div>
+            
             <div style={{ 
               width: '32px', 
               height: '32px', 
@@ -367,7 +496,8 @@ export default function App() {
         {/* 主内容区域 */}
         <main style={{ 
           flex: 1,
-          overflowY: 'auto'
+          overflowY: 'auto',
+          overflowX: 'hidden'
         }}>
           {renderContent()}
         </main>

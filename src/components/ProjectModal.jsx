@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const ProjectModal = ({ 
   isOpen, 
@@ -7,6 +8,7 @@ const ProjectModal = ({
   project = null, 
   isEdit = false 
 }) => {
+  const { t } = useTranslation()
   const [formData, setFormData] = useState({
     name: '',
     department: '',
@@ -94,7 +96,7 @@ const ProjectModal = ({
             fontWeight: '600',
             margin: 0 
           }}>
-            {isEdit ? '编辑项目' : '新建项目'}
+            {isEdit ? t('common.editProject') : t('common.newProject')}
           </h2>
           <button
             onClick={onClose}
@@ -121,7 +123,7 @@ const ProjectModal = ({
                 fontSize: '0.9rem',
                 fontWeight: '500'
               }}>
-                项目名称 *
+                {t('common.projectName')} *
               </label>
               <input
                 type="text"
@@ -138,7 +140,7 @@ const ProjectModal = ({
                   color: '#e6f0ff',
                   fontSize: '0.9rem'
                 }}
-                placeholder="请输入项目名称"
+                placeholder={t('common.projectName')}
               />
             </div>
 
@@ -150,7 +152,7 @@ const ProjectModal = ({
                 fontSize: '0.9rem',
                 fontWeight: '500'
               }}>
-                部门 *
+                {t('common.department')} *
               </label>
               <select
                 name="department"
@@ -167,7 +169,7 @@ const ProjectModal = ({
                   fontSize: '0.9rem'
                 }}
               >
-                <option value="">选择部门</option>
+                <option value="">{t('common.department')}</option>
                 <option value="技术部">技术部</option>
                 <option value="产品部">产品部</option>
                 <option value="运营部">运营部</option>
@@ -185,7 +187,7 @@ const ProjectModal = ({
                 fontSize: '0.9rem',
                 fontWeight: '500'
               }}>
-                负责人 *
+                {t('common.owner')} *
               </label>
               <input
                 type="text"
@@ -202,7 +204,7 @@ const ProjectModal = ({
                   color: '#e6f0ff',
                   fontSize: '0.9rem'
                 }}
-                placeholder="请输入负责人姓名"
+                placeholder={t('common.owner')}
               />
             </div>
 
@@ -214,7 +216,7 @@ const ProjectModal = ({
                 fontSize: '0.9rem',
                 fontWeight: '500'
               }}>
-                优先级
+                {t('common.priority')}
               </label>
               <select
                 name="priority"
@@ -230,10 +232,10 @@ const ProjectModal = ({
                   fontSize: '0.9rem'
                 }}
               >
-                <option value="low">低</option>
-                <option value="medium">中</option>
-                <option value="high">高</option>
-                <option value="urgent">紧急</option>
+                <option value="low">{t('common.low')}</option>
+                <option value="medium">{t('common.medium')}</option>
+                <option value="high">{t('common.high')}</option>
+                <option value="urgent">{t('alerts.urgent')}</option>
               </select>
             </div>
           </div>
@@ -247,7 +249,7 @@ const ProjectModal = ({
                 fontSize: '0.9rem',
                 fontWeight: '500'
               }}>
-                开始日期
+                {t('common.dueDate')}
               </label>
               <input
                 type="date"
@@ -274,7 +276,7 @@ const ProjectModal = ({
                 fontSize: '0.9rem',
                 fontWeight: '500'
               }}>
-                结束日期
+                {t('common.dueDate')}
               </label>
               <input
                 type="date"
@@ -302,7 +304,7 @@ const ProjectModal = ({
               fontSize: '0.9rem',
               fontWeight: '500'
             }}>
-              项目描述
+              {t('common.projectDescription')}
             </label>
             <textarea
               name="description"
@@ -319,7 +321,7 @@ const ProjectModal = ({
                 fontSize: '0.9rem',
                 resize: 'vertical'
               }}
-              placeholder="请输入项目描述"
+              placeholder={t('common.projectDescription')}
             />
           </div>
 
@@ -332,7 +334,7 @@ const ProjectModal = ({
                 fontSize: '0.9rem',
                 fontWeight: '500'
               }}>
-                项目状态
+                {t('common.status')}
               </label>
               <select
                 name="status"
@@ -348,11 +350,11 @@ const ProjectModal = ({
                   fontSize: '0.9rem'
                 }}
               >
-                <option value="active">进行中</option>
-                <option value="completed">已完成</option>
-                <option value="paused">已暂停</option>
-                <option value="cancelled">已取消</option>
-                <option value="delayed">延期</option>
+                <option value="active">{t('common.active')}</option>
+                <option value="completed">{t('common.completed')}</option>
+                <option value="paused">{t('common.paused')}</option>
+                <option value="cancelled">{t('common.cancelled')}</option>
+                <option value="delayed">{t('projects.delayed')}</option>
               </select>
             </div>
           )}
@@ -376,7 +378,7 @@ const ProjectModal = ({
                 fontSize: '0.9rem'
               }}
             >
-              取消
+              {t('common.cancel')}
             </button>
             <button
               type="submit"
@@ -391,7 +393,7 @@ const ProjectModal = ({
                 fontWeight: '500'
               }}
             >
-              {isEdit ? '更新项目' : '创建项目'}
+              {isEdit ? t('common.update') : t('common.create')}
             </button>
           </div>
         </form>
